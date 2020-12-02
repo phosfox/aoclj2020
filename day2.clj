@@ -34,3 +34,19 @@
 (assert (= 2 (solve1 test-input)))
 
 (solve1 input)
+
+(defn xor [x y]
+  (or (and (not x) y) (and x (not y))))
+
+(defn test-policy2 [[least most letter password]]
+  (let [l (str (get password (dec least)))
+        m (str (get password (dec most)))]
+    (xor (= l letter) (= m letter))))
+
+(defn solve2 [inp]
+  (->> inp
+       (map str->policy)
+       (filter test-policy2)
+       count))
+
+(solve2 input)
