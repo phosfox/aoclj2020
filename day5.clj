@@ -46,8 +46,12 @@
     (map seat-id)
     sort
     (map vector (range 59 905))
-    (filter #(not= (first %) (second %)))
-    first
+    (map #(if (= 0 (-
+                    (first %)
+                    (second %)))
+            0
+            (first %)))
+    (filter (complement zero?))
     first))
 
 (solve1 real-input)
