@@ -1,5 +1,6 @@
 (ns aoclj2020
-  (:require [clojure.string :as str]))
+  (:require [clojure.string :as str]
+            [clojure.set :as set]))
 
 (def test-input
   ["BFFFBBFRRR"
@@ -39,20 +40,13 @@
     (map seat-id)
     (apply max)))
 
-
 (defn solve2 [inp]
-  (->>
-    inp
-    (map seat-id)
-    sort
-    (map vector (range 59 905))
-    (map #(if (= 0 (-
-                    (first %)
-                    (second %)))
-            0
-            (first %)))
-    (filter (complement zero?))
-    first))
+  (let [taken (sort (map seat-id inp))]
+    (set/difference (set (range (first taken) (last taken)))
+                    (set taken))))
 
 (solve1 real-input)
 (solve2 real-input)
+
+
+(set/difference #{1 2 3 4} #{1 2 3 5})
