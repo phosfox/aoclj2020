@@ -2,12 +2,18 @@
 
 (def test-input [1721 979 366 299 675 1456])
 
+
+(first test-input)
+
 (defn parse-int [n]
   (Integer/parseInt n))
 
 (def raw-input (clojure.string/split-lines
                 (slurp "day1.input")))
 (first raw-input)
+
+
+(+ 1 1 1)
 
 (def input (map parse-int raw-input))
 
@@ -31,6 +37,11 @@
 
 (assert (= 241861950
            (solve2 test-input)))
+
+(defn add [x y]
+  (+ x y))
+
+(add 1 2)
 
 (solve1 input)
 (solve2 input)
