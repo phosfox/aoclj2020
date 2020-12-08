@@ -38,6 +38,3 @@ b")
 
 (solve1 real-input)
 (solve2 real-input)
-
-
-(set/intersection #{"a" "b"} #{"c" "b"})
