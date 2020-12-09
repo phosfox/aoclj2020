@@ -12,21 +12,6 @@
    "faded blue" []
    "dotted black" []})
 
-(defn bfs [graph start result]
-  (if (some? start)
-    (let [vals (get graph start)
-          new-res (into result vals)]
-      (bfs graph (first vals) new-res))
-    result))
-
-
-(bfs graph "shiny gold" #{})
-
-(apply #(bfs graph % #{}) ["dark olive" "vibrant plum"])
-
-(into #{} [:a :b] [:c])
-
-(conj [1 2] 3)
 (defn visited?
   "Predicate which returns true if the node v has been visited already, false otherwise."
   [v coll]
