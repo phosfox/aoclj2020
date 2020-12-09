@@ -29,3 +29,16 @@
     n))
 
 (find-invalid real-nums (all-combs real-input))
+
+(def invalid-num 1492208709)
+
+(def solution2
+  (first (for [i (range (count real-input))
+               :let [drops (drop i real-input)]
+               [red idx] (map vector (reductions + drops) (range))
+               :when (= invalid-num red)
+               :let [subv (subvec (into [] real-input) i (+ 1 idx i))
+                     smallest (apply min subv)
+                     largest (apply max subv)]]
+           [(+ smallest largest)])))
+
