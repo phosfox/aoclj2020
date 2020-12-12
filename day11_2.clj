@@ -6,6 +6,11 @@
        slurp
        str/split-lines))
 
+(def real-input
+  (->> "day11.input"
+       slurp
+       str/split-lines))
+
 (defn parse-world [input]
   (let [row-max (count input)
         col-max (count (first input))]
@@ -15,9 +20,6 @@
                 :let [seat (get-in input [row col])]
                 :when (not= seat \.)]
             {[row col] seat}))))
-
-(def world
-  (parse-world test-input))
 
 (defn neighbours [[row col]]
   (for [r (range -1 2)
@@ -50,5 +52,14 @@
        (filter #(= \O %))
        count))
 
-(do world)
-(count-occupied (nth (iterate #(next-generation %) world) 5))
+(defn find-stable-generation [world]
+  (reduce
+   (fn [old-gen next-gen]
+     (if (= old-gen next-gen)
+       (reduced old-gen)
+       next-gen))
+   {}
+   (iterate #(next-generation %) world)))
+
+(def solution1
+  (count-occupied (find-stable-generation (parse-world real-input))))
