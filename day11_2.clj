@@ -41,10 +41,43 @@
           (for [cell cells
                 :let [nbs (neighbours cell)
                       seat (get world cell)]]
-            (case seat
-              \L (if (= 0 (occupied-neighbours world cell)) {cell \O} {cell seat})
-              \O (if (>= (occupied-neighbours world cell) 4) {cell \L} {cell seat})
-              :else {cell seat})))))
+            {cell (new-seat world cell)}))))
+
+(defn next-generation2 [world]
+  (let [cells (keys world)
+        old-world world]
+    (loop [world world
+           cells cells]
+      (if (seq cells)
+        (let [cell (first cells)]
+          (recur (assoc world cell (new-seat old-world cell)) (next cells)))
+        world))))
+
+(defn new-seat [world cell]
+  (let [seat (get world cell)]
+    (case seat
+      \L (if (= 0 (occupied-neighbours world cell)) \O \L)
+      \O (if (>= (occupied-neighbours world cell) 4) \L \O))))
+
+(defn next-generation3 [world]
+  (let [cells (keys world)
+        old-world world]
+   (reduce
+    (fn [new-world cell]
+     (let [nbs (neighbours cell)]
+       (assoc new-world cell (new-seat old-world cell))))
+    world
+    cells)))
+  
+            
+(time (next-generation world))
+(time (next-generation2 world))
+(time (next-generation3 world))
+
+(=
+ (next-generation world)
+ (next-generation2 world)
+ (next-generation3 world))
 
 (defn count-occupied [world]
   (->> world
@@ -62,4 +95,6 @@
    (iterate #(next-generation %) world)))
 
 (def solution1
-  (count-occupied (find-stable-generation (parse-world real-input))))
+  (count-occupied (find-stable-generation (parse-world test-input))))
+
+(do solution1)
