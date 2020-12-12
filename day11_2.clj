@@ -85,16 +85,20 @@
        (filter #(= \O %))
        count))
 
-(defn find-stable-generation [world]
+(defn find-stable-generation [world new-gen-fn]
   (reduce
    (fn [old-gen next-gen]
      (if (= old-gen next-gen)
        (reduced old-gen)
        next-gen))
    {}
-   (iterate #(next-generation %) world)))
+   (iterate #(new-gen-fn %) world)))
 
 (def solution1
   (count-occupied (find-stable-generation (parse-world test-input))))
 
 (do solution1)
+
+(time (count-occupied (find-stable-generation (parse-world real-input) next-generation)))
+(time (count-occupied (find-stable-generation (parse-world real-input) next-generation2)))
+(time (count-occupied (find-stable-generation (parse-world real-input) next-generation3)))
